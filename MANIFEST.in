@@ -1,0 +1,4 @@
+include README.md
+recursive-include octoprint_SCC_32U/templates *
+recursive-include octoprint_SCC_32U/translations *
+recursive-include octoprint_SCC_32U/static *
