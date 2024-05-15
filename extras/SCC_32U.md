@@ -2,7 +2,7 @@
 layout: plugin
 
 id: SCC_32U
-title: OctoPrint-Scc_32u
+title: OctoPrint-SCC_32U
 description: An OctoPrint plugin to communicate with the SCC-32U Servo Controller
 authors:
 - Tyler Kobida
@@ -11,9 +11,9 @@ license: AGPLv3
 # TODO
 date: today's date in format YYYY-MM-DD, e.g. 2015-04-21
 
-homepage: https://github.com/KobiSteve07/OctoPrint-Scc_32u
-source: https://github.com/KobiSteve07/OctoPrint-Scc_32u
-archive: https://github.com/KobiSteve07/OctoPrint-Scc_32u/archive/master.zip
+homepage: https://github.com/KobiSteve07/OctoPrint-SCC_32U
+source: https://github.com/KobiSteve07/OctoPrint-SCC_32U
+archive: https://github.com/KobiSteve07/OctoPrint-SCC_32U/archive/master.zip
 
 # TODO
 # Set this to true if your plugin uses the dependency_links setup parameter to include

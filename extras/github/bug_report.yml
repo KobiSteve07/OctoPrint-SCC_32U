@@ -1,12 +1,12 @@
 name: 🐛 Report a bug
-description: Create a bug report to help improve OctoPrint-Scc_32u
+description: Create a bug report to help improve OctoPrint-SCC_32U
 body:
   - type: markdown
     attributes:
       value: >-
-        **Thank you for wanting to report a bug in OctoPrint-Scc_32u!**
+        **Thank you for wanting to report a bug in OctoPrint-SCC_32U!**
 
-          * First, be sure you are running the [latest version of the OctoPrint-Scc_32u plugin](https://github.com/KobiSteve07/OctoPrint-Scc_32u/releases).
+          * First, be sure you are running the [latest version of the OctoPrint-SCC_32U plugin](https://github.com/KobiSteve07/OctoPrint-SCC_32U/releases).
           * You will also need to [enable debugging on the plugin](https://docs.octoprint.org/en/master/configuration/logging_yaml.html).
             * This may be done through the *Settings* > *OctoPrint* > *Logging* > *Logging Levels* section.
             * Select the "octoprint.plugins.SCC_32U" name, and make sure Level is "DEBUG".
@@ -35,8 +35,8 @@ body:
         ## Environment
   - type: input
     attributes:
-      label: Version of OctoPrint-Scc_32u
-      description: Can be found in *Settings* > *Plugin Manager*, next to "OctoPrint-Scc_32u".
+      label: Version of OctoPrint-SCC_32U
+      description: Can be found in *Settings* > *Plugin Manager*, next to "OctoPrint-SCC_32U".
     validations:
       required: true
   - type: input

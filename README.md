@@ -1,4 +1,4 @@
-# OctoPrint-Scc_32u
+# OctoPrint-SCC_32U
 
 **TODO:** Describe what your plugin does.
 
@@ -7,7 +7,7 @@
 Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bundledplugins/pluginmanager.html)
 or manually using this URL:
 
-    https://github.com/KobiSteve07/OctoPrint-Scc_32u/archive/master.zip
+    https://github.com/KobiSteve07/OctoPrint-SCC_32U/archive/master.zip
 
 **TODO:** Describe how to install your plugin, if more needs to be done than just installing it via pip or through
 the plugin manager.

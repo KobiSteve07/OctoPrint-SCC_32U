@@ -11,7 +11,7 @@ from __future__ import absolute_import
 
 import octoprint.plugin
 
-class Scc_32uPlugin(octoprint.plugin.SettingsPlugin,
+class SCC_32UPlugin(octoprint.plugin.SettingsPlugin,
     octoprint.plugin.AssetPlugin,
     octoprint.plugin.TemplatePlugin
 ):
@@ -42,17 +42,17 @@ class Scc_32uPlugin(octoprint.plugin.SettingsPlugin,
         # for details.
         return {
             "SCC_32U": {
-                "displayName": "Scc_32u Plugin",
+                "displayName": "SCC_32U Plugin",
                 "displayVersion": self._plugin_version,
 
                 # version check: github repository
                 "type": "github_release",
                 "user": "KobiSteve07",
-                "repo": "OctoPrint-Scc_32u",
+                "repo": "OctoPrint-SCC_32U",
                 "current": self._plugin_version,
 
                 # update method: pip
-                "pip": "https://github.com/KobiSteve07/OctoPrint-Scc_32u/archive/{target_version}.zip",
+                "pip": "https://github.com/KobiSteve07/OctoPrint-SCC_32U/archive/{target_version}.zip",
             }
         }
 
@@ -60,7 +60,7 @@ class Scc_32uPlugin(octoprint.plugin.SettingsPlugin,
 # If you want your plugin to be registered within OctoPrint under a different name than what you defined in setup.py
 # ("OctoPrint-PluginSkeleton"), you may define that here. Same goes for the other metadata derived from setup.py that
 # can be overwritten via __plugin_xyz__ control properties. See the documentation for that.
-__plugin_name__ = "Scc_32u Plugin"
+__plugin_name__ = "SCC_32U Plugin"
 
 
 # Set the Python version your plugin is compatible with below. Recommended is Python 3 only for all new plugins.
@@ -70,7 +70,7 @@ __plugin_pythoncompat__ = ">=3,<4"  # Only Python 3
 
 def __plugin_load__():
     global __plugin_implementation__
-    __plugin_implementation__ = Scc_32uPlugin()
+    __plugin_implementation__ = SCC_32UPlugin()
 
     global __plugin_hooks__
     __plugin_hooks__ = {

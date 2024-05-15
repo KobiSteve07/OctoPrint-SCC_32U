@@ -1,11 +1,11 @@
 /*
- * View model for OctoPrint-Scc_32u
+ * View model for OctoPrint-SCC_32U
  *
  * Author: Tyler Kobida
  * License: AGPLv3
  */
 $(function() {
-    function Scc_32uViewModel(parameters) {
+    function SCC_32UViewModel(parameters) {
         var self = this;
 
         // assign the injected parameters, e.g.:
@@ -20,7 +20,7 @@ $(function() {
      * and a full list of the available options.
      */
     OCTOPRINT_VIEWMODELS.push({
-        construct: Scc_32uViewModel,
+        construct: SCC_32UViewModel,
         // ViewModels your plugin depends on, e.g. loginStateViewModel, settingsViewModel, ...
         dependencies: [ /* "loginStateViewModel", "settingsViewModel" */ ],
         // Elements to bind to, e.g. #settings_plugin_SCC_32U, #tab_plugin_SCC_32U, ...
