@@ -1,12 +1,16 @@
-#scc_32u_plugin {
-    padding: 10px;
+/* SCC_32U.css */
+#tab_plugin_SCC_32U {
+    padding: 20px;
 }
 
-#scc_32u_plugin h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
+#tab_plugin_SCC_32U h2 {
+    margin-bottom: 20px;
 }
 
-#scc_32u_plugin input, #scc_32u_plugin button {
-    margin: 5px;
+#tab_plugin_SCC_32U .form-inline .form-group {
+    margin-right: 10px;
+}
+
+#tab_plugin_SCC_32U .form-control {
+    width: auto;
 }

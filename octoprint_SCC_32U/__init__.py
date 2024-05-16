@@ -7,19 +7,23 @@ from .scc_32u_controller import Scc32uController
 class Scc32uPlugin(octoprint.plugin.StartupPlugin,
                    octoprint.plugin.TemplatePlugin,
                    octoprint.plugin.AssetPlugin,
-                   octoprint.plugin.SimpleApiPlugin):
+                   octoprint.plugin.SimpleApiPlugin,
+                   octoprint.plugin.SettingsPlugin):
 
     def __init__(self):
-        self.controller = Scc32uController()
+        self.controller = None
 
     def on_after_startup(self):
-        self._logger.info("SCC-32U Plugin started")
+        port = self._settings.get(["port"])
+        self.controller = Scc32uController(port)
+        self._logger.info("SCC-32U Plugin started with port: {}".format(port))
 
     def get_template_configs(self):
         return [
-            dict(type="navbar", custom_bindings=False),
-            dict(type="settings", custom_bindings=False)
+            dict(type="settings", custom_bindings=False),
+            dict(type="tab", name="SCC-32U Control", custom_bindings=True)
         ]
+
 
     def get_assets(self):
         return {
@@ -30,14 +34,24 @@ class Scc32uPlugin(octoprint.plugin.StartupPlugin,
 
     def get_api_commands(self):
         return dict(
-            move=["angle"]
+            move=["servo_id", "angle"]
         )
 
     def on_api_command(self, command, data):
         if command == "move":
-            angle = data.get("angle", 0)
-            self.controller.move_arm(angle)
+            servo_id = int(data.get("servo_id", 0))
+            angle = int(data.get("angle", 1500))
+            self._logger.info(f"Received move command for servo {servo_id} with angle: {angle}")
+            self.controller.move_arm(servo_id, angle)
             return dict(status="success")
+
+    def on_shutdown(self):
+        self.controller.close()
+
+    def get_settings_defaults(self):
+        return {
+            "port": ""
+        }
 
     def get_update_information(self):
         return {
