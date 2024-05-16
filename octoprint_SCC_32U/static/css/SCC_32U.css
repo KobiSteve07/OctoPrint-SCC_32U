@@ -1,1 +1,12 @@
-/* TODO: Have your plugin's CSS files generated to here. */
+#scc_32u_plugin {
+    padding: 10px;
+}
+
+#scc_32u_plugin h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#scc_32u_plugin input, #scc_32u_plugin button {
+    margin: 5px;
+}

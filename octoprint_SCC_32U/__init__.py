@@ -1,76 +1,69 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-### (Don't forget to remove me)
-# This is a basic skeleton for your plugin's __init__.py. You probably want to adjust the class name of your plugin
-# as well as the plugin mixins it's subclassing from. This is really just a basic skeleton to get you started,
-# defining your plugin as a template plugin, settings and asset plugin. Feel free to add or remove mixins
-# as necessary.
-#
-# Take a look at the documentation on what other plugin mixins are available.
-
 import octoprint.plugin
+from .scc_32u_controller import Scc32uController
 
-class SCC_32UPlugin(octoprint.plugin.SettingsPlugin,
-    octoprint.plugin.AssetPlugin,
-    octoprint.plugin.TemplatePlugin
-):
+class Scc32uPlugin(octoprint.plugin.StartupPlugin,
+                   octoprint.plugin.TemplatePlugin,
+                   octoprint.plugin.AssetPlugin,
+                   octoprint.plugin.SimpleApiPlugin):
 
-    ##~~ SettingsPlugin mixin
+    def __init__(self):
+        self.controller = Scc32uController()
 
-    def get_settings_defaults(self):
-        return {
-            # put your plugin's default settings here
-        }
+    def on_after_startup(self):
+        self._logger.info("SCC-32U Plugin started")
 
-    ##~~ AssetPlugin mixin
+    def get_template_configs(self):
+        return [
+            dict(type="navbar", custom_bindings=False),
+            dict(type="settings", custom_bindings=False)
+        ]
 
     def get_assets(self):
-        # Define your plugin's asset files to automatically include in the
-        # core UI here.
         return {
             "js": ["js/SCC_32U.js"],
             "css": ["css/SCC_32U.css"],
             "less": ["less/SCC_32U.less"]
         }
 
-    ##~~ Softwareupdate hook
+    def get_api_commands(self):
+        return dict(
+            move=["angle"]
+        )
+
+    def on_api_command(self, command, data):
+        if command == "move":
+            angle = data.get("angle", 0)
+            self.controller.move_arm(angle)
+            return dict(status="success")
 
     def get_update_information(self):
-        # Define the configuration for your plugin to use with the Software Update
-        # Plugin here. See https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html
-        # for details.
         return {
             "SCC_32U": {
-                "displayName": "SCC_32U Plugin",
+                "displayName": "SCC-32U Plugin",
                 "displayVersion": self._plugin_version,
-
-                # version check: github repository
                 "type": "github_release",
                 "user": "KobiSteve07",
-                "repo": "OctoPrint-SCC_32U",
+                "repo": "OctoPrint-Scc_32u",
                 "current": self._plugin_version,
-
-                # update method: pip
-                "pip": "https://github.com/KobiSteve07/OctoPrint-SCC_32U/archive/{target_version}.zip",
+                "pip": "https://github.com/KobiSteve07/OctoPrint-Scc_32u/archive/{target_version}.zip"
             }
         }
 
-
-# If you want your plugin to be registered within OctoPrint under a different name than what you defined in setup.py
-# ("OctoPrint-PluginSkeleton"), you may define that here. Same goes for the other metadata derived from setup.py that
-# can be overwritten via __plugin_xyz__ control properties. See the documentation for that.
-__plugin_name__ = "SCC_32U Plugin"
-
-
-# Set the Python version your plugin is compatible with below. Recommended is Python 3 only for all new plugins.
-# OctoPrint 1.4.0 - 1.7.x run under both Python 3 and the end-of-life Python 2.
-# OctoPrint 1.8.0 onwards only supports Python 3.
-__plugin_pythoncompat__ = ">=3,<4"  # Only Python 3
+__plugin_name__ = "SCC-32U Plugin"
+__plugin_version__ = "0.1.0"
+__plugin_description__ = "Control the SCC-32U robot arm from OctoPrint"
+__plugin_author__ = "Tyler Kobida"
+__plugin_author_email__ = "dtkobida@gmail.com"
+__plugin_url__ = "https://github.com/KobiSteve07/OctoPrint-Scc_32u"
+__plugin_license__ = "AGPLv3"
+__plugin_pythoncompat__ = ">=3,<4"  # Ensure Python 3 compatibility
 
 def __plugin_load__():
     global __plugin_implementation__
-    __plugin_implementation__ = SCC_32UPlugin()
+    __plugin_implementation__ = Scc32uPlugin()
 
     global __plugin_hooks__
     __plugin_hooks__ = {

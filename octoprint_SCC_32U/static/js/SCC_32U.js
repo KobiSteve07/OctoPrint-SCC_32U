@@ -1,29 +1,24 @@
-/*
- * View model for OctoPrint-SCC_32U
- *
- * Author: Tyler Kobida
- * License: AGPLv3
- */
 $(function() {
-    function SCC_32UViewModel(parameters) {
-        var self = this;
-
-        // assign the injected parameters, e.g.:
-        // self.loginStateViewModel = parameters[0];
-        // self.settingsViewModel = parameters[1];
-
-        // TODO: Implement your plugin's view model here.
+    function moveArm(angle) {
+        $.ajax({
+            url: API_BASEURL + "plugin/SCC_32U",
+            type: "POST",
+            dataType: "json",
+            data: JSON.stringify({
+                command: "move",
+                angle: angle
+            }),
+            contentType: "application/json; charset=UTF-8"
+        }).done(function(response) {
+            console.log("Move command sent successfully:", response);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.error("Failed to send move command:", textStatus, errorThrown);
+        });
     }
 
-    /* view model class, parameters for constructor, container to bind to
-     * Please see http://docs.octoprint.org/en/master/plugins/viewmodels.html#registering-custom-viewmodels for more details
-     * and a full list of the available options.
-     */
-    OCTOPRINT_VIEWMODELS.push({
-        construct: SCC_32UViewModel,
-        // ViewModels your plugin depends on, e.g. loginStateViewModel, settingsViewModel, ...
-        dependencies: [ /* "loginStateViewModel", "settingsViewModel" */ ],
-        // Elements to bind to, e.g. #settings_plugin_SCC_32U, #tab_plugin_SCC_32U, ...
-        elements: [ /* ... */ ]
+    // Example button click event to move the arm to 90 degrees
+    $("#move-arm-button").click(function() {
+        var angle = $("#angle-input").val();
+        moveArm(angle);
     });
 });
