@@ -1,6 +1,10 @@
 import serial
 import time
 import serial.tools.list_ports
+import subprocess
+import glob
+import os
+import platform
 
 class Scc32uController:
     def __init__(self, port=None, baud_rate=9600):
@@ -10,11 +14,34 @@ class Scc32uController:
         self.slider_values = [1500] * 6  # Default values for 6 servos
 
     def auto_detect_port(self):
-        ports = list(serial.tools.list_ports.comports())
+        system_name = platform.system()
+        ports = []
+        
+        if system_name == "Windows":
+            # List COM ports for Windows
+            ports = ['COM%s' % (i + 1) for i in range(256)]
+        elif system_name == "Linux":
+            # List /dev/ttyUSB* and /dev/ttyACM* for Linux
+            ports = glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*')
+        elif system_name == "Darwin":
+            # List /dev/tty.* for macOS
+            ports = glob.glob('/dev/tty.*')
+        else:
+            raise Exception(f"Unsupported platform: {system_name}")
+        
+        result = []
         for port in ports:
-            if "USB" in port.description:
-                return port.device
-        raise Exception("Could not auto-detect a suitable serial port.")
+            try:
+                with open(port) as p:
+                    result.append(port)
+            except Exception as e:
+                print(e)
+                continue
+
+        if result:
+            return result[0]
+        else:
+            raise Exception("Could not auto-detect a suitable serial port.")
 
     def send_command(self, command):
         command += '\r'  # Append carriage return for the SSC-32

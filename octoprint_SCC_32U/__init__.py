@@ -2,28 +2,57 @@
 from __future__ import absolute_import
 
 import octoprint.plugin
+from flask import Blueprint, request, jsonify
 from .scc_32u_controller import Scc32uController
 
 class Scc32uPlugin(octoprint.plugin.StartupPlugin,
                    octoprint.plugin.TemplatePlugin,
                    octoprint.plugin.AssetPlugin,
                    octoprint.plugin.SimpleApiPlugin,
-                   octoprint.plugin.SettingsPlugin):
+                   octoprint.plugin.SettingsPlugin,
+                   octoprint.plugin.BlueprintPlugin):
+
+    light_on = False
+
+    @octoprint.plugin.BlueprintPlugin.route("/toggle-light", methods=["POST"])
+    def toggle_light(self):
+        
+
+        return jsonify(message="Successfully toggled the light!")
+
+    @octoprint.plugin.BlueprintPlugin.route('/servo/<int:servo>', methods=['POST'])
+    def update_servo(self, servo):
+        print(str(servo))
+        servo = int(servo)
+        if 0 <= servo <= 5:
+            data = request.get_json()
+            value = int(data['value'])
+            if 0 <= value <= 180:
+                self.set_servo_value(servo, value)
+                return jsonify(success=True)
+            else:
+                return jsonify(success=False, error="Value out of range"), 400
+        else:
+            return jsonify(success=False, error="Invalid servo index"), 400
 
     def __init__(self):
         self.controller = None
+        self._plugin_blueprint = Blueprint('SCC_32U', __name__)
 
     def on_after_startup(self):
         port = self._settings.get(["port"])
         self.controller = Scc32uController(port)
         self._logger.info("SCC-32U Plugin started with port: {}".format(port))
 
+    def set_servo_value(self, servo, value):
+        self._logger.info(f"Setting servo {servo} to {value}")
+        self.controller.move_arm(servo, value)
+
     def get_template_configs(self):
         return [
             dict(type="settings", custom_bindings=False),
             dict(type="tab", name="SCC-32U Control", custom_bindings=True)
         ]
-
 
     def get_assets(self):
         return {
@@ -83,3 +112,6 @@ def __plugin_load__():
     __plugin_hooks__ = {
         "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
     }
+
+def get_blueprint(self, current_blueprints, current_flask_app):
+    return [("SCC_32U", self._plugin_blueprint)]

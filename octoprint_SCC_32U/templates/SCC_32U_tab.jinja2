@@ -1,15 +1,71 @@
-<!-- templates/tab_scc_32u.jinja2 -->
-<div id="tab_scc_32u">
-    <h2>SCC-32U Control</h2>
-    <form class="form-inline">
-        <div class="form-group">
-            <label for="servo_id_input">Servo ID:</label>
-            <input type="number" class="form-control" id="servo_id_input" min="0" max="5" value="0">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Servo Control</title>
+    <style>
+        .slider-container {
+            margin: 20px 0;
+        }
+        .slider-label {
+            display: inline-block;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <button id="toggle-light-button" onclick="toggleLight()">Toggle Light</button>
+    <div id="servo-controls">
+        {% for i in range(6) %}
+        <div class="slider-container">
+            <label class="slider-label" for="servo{{ i }}">Servo {{ i }}:</label>
+            <input type="range" id="servo{{ i }}" name="servo{{ i }}" min="0" max="180" value="90" oninput="updateServoValue({{ i }}, this.value)">
+            <span id="servo{{ i }}-value">90</span>
         </div>
-        <div class="form-group">
-            <label for="move_arm_input">Angle:</label>
-            <input type="number" class="form-control" id="move_arm_input" min="500" max="2500" value="1500">
-        </div>
-        <button type="button" class="btn btn-primary" id="move_arm_button">Move Arm</button>
-    </form>
-</div>
+        {% endfor %}
+    </div>
+    <script>
+        function updateServoValue(servo, value) {
+            document.getElementById(`servo${servo}-value`).innerText = value;
+            sendServoValueToServer(servo, value);
+        }
+
+        function sendServoValueToServer(servo, value) {
+            fetch(`/plugin/SCC_32U/servo/${servo}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ value: value })
+            }).then(response => {
+                if (!response.ok) {
+                    response.json().then(data => {
+                        alert('Error updating servo value: ' + (data.error || 'Unknown error'));
+                    });
+                }
+            }).catch(error => {
+                console.error('Fetch error:', error);
+                alert('Error updating servo value');
+            });
+        }
+
+        function toggleLight() {
+            fetch('/plugin/SCC_32U/toggle-light', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ toggle: true })
+            }).then(response => {
+                if (!response.ok) {
+                    response.json().then(data => {
+                        alert('Error toggling light: ' + (data.error || 'Unknown error'));
+                    });
+                }
+            }).catch(error => {
+                console.error('Fetch error:', error);
+                alert('Error toggling light');
+            });
+        }
+    </script>
+</body>
+</html>
